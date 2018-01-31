@@ -18,22 +18,22 @@ func main() {
 	app.Version = fmt.Sprintf("0.0.%s", build)
 	app.Flags = []cli.Flag{
 
-		//
-		// repo args
-		//
 		cli.StringFlag{
 			Name:   "repository",
 			Usage:  "pypi repository URL",
+			Value:  "https://pypi.python.org/pypi",
 			EnvVar: "PLUGIN_REPOSITORY",
 		},
 		cli.StringFlag{
 			Name:   "username",
 			Usage:  "pypi username",
+			Value:  "guido",
 			EnvVar: "PLUGIN_USERNAME",
 		},
 		cli.StringFlag{
 			Name:   "password",
 			Usage:  "pypi password",
+			Value:  "secret",
 			EnvVar: "PLUGIN_PASSWORD",
 		},
 		cli.StringSliceFlag{
