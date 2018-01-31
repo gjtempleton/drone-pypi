@@ -1,4 +1,4 @@
-FROM alpine:3.2
+FROM python:3.6-alpine
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-ADD my-plugin /bin/
-ENTRYPOINT ["/bin/my-plugin"]
+ADD drone-pypi /bin/
+ENTRYPOINT ["/bin/drone-pypi"]
