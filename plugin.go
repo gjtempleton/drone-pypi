@@ -1,55 +1,14 @@
 package main
 
-type (
-	Repo struct {
-		Owner   string
-		Name    string
-		Link    string
-		Avatar  string
-		Branch  string
-		Private bool
-		Trusted bool
-	}
+// Plugin defines the PyPi plugin parameters
+type Plugin struct {
+	Repository    string
+	Username      string
+	Password      string
+	Distributions []string
+}
 
-	Build struct {
-		Number   int
-		Event    string
-		Status   string
-		Deploy   string
-		Created  int64
-		Started  int64
-		Finished int64
-		Link     string
-	}
-
-	Commit struct {
-		Remote  string
-		Sha     string
-		Ref     string
-		Link    string
-		Branch  string
-		Message string
-		Author  Author
-	}
-
-	Author struct {
-		Name   string
-		Email  string
-		Avatar string
-	}
-
-	Config struct {
-		// plugin-specific parameters and secrets
-	}
-
-	Plugin struct {
-		Repo   Repo
-		Build  Build
-		Commit Commit
-		Config Config
-	}
-)
-
+// Exec runs the plugin - doing the necessary setup.py modifications
 func (p Plugin) Exec() error {
 	// plugin logic goes here
 	return nil
