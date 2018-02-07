@@ -10,10 +10,10 @@ script:
 - go build -ldflags "-X main.build=${TRAVIS_BUILD_NUMBER}" -a -tags netgo
 after_success:
 - test $TRAVIS_PULL_REQUEST = false && docker login -u $DOCKER_USER -p $DOCKER_PASS
-  && export REPO=gjtempleton/drone-pypi && docker build -t $REPO:$COMMIT --build-arg
-  GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" . && docker tag $REPO:$COMMIT
+  && export REPO=gjtempleton/drone-pypi && docker build -t $REPO:build --build-arg
+  GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" . && docker tag $REPO:build
   $REPO:travis-$TRAVIS_BUILD_NUMBER && if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-  docker tag $REPO:$COMMIT $REPO:latest; else docker tag $REPO:$COMMIT $REPO:$TRAVIS_BRANCH;
+  docker tag $REPO:build $REPO:latest; else docker tag $REPO:build $REPO:$TRAVIS_BRANCH;
   fi && docker push $REPO
 env:
   global:
