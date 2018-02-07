@@ -41,7 +41,7 @@ func (p Plugin) Exec() error {
 	args = append(args, "upload")
 	args = append(args, "-r")
 	args = append(args, "pypi")
-	out, err := exec.Command("python", args...).CombinedOutput()
+	out, err := exec.Command("python3", args...).CombinedOutput()
 
 	if err != nil {
 		log.Printf("Error enountered: %v", err)
