@@ -3,7 +3,7 @@ services:
 - docker
 language: go
 go:
-- 1.8
+- 1.9
 script:
 - go vet
 - go test -cover -coverprofile=coverage.out
