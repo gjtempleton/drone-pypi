@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -46,12 +45,6 @@ password: %s
 func (p Plugin) Exec() error {
 	err := p.createConfig()
 
-	b, err := ioutil.ReadFile(path.Join(os.Getenv("HOME"), ".pypirc"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println(string(b))
 	if err != nil {
 		log.Fatalf("Unable to write .pypirc file due to: %s", err)
 	}
@@ -69,7 +62,7 @@ func (p Plugin) Exec() error {
 	out, err := exec.Command("python3", args...).CombinedOutput()
 
 	if err != nil {
-		log.Fatalf("Error enountered: %v", out)
+		log.Fatalf("Error enountered: %s", out)
 	}
 	log.Printf("Output: %s", out)
 	return nil
