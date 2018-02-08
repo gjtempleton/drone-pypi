@@ -19,7 +19,7 @@ type Plugin struct {
 }
 
 func (p Plugin) createConfig() error {
-	f, err := os.Create(path.Join(os.Getenv("HOME"), ".pypirc"))
+	f, err := os.Create(path.Join("/", ".pypirc"))
 	if err != nil {
 		return err
 	}
