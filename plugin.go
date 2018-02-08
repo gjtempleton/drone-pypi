@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"os/exec"
+	"path"
 )
 
 // Plugin defines the PyPi plugin parameters
@@ -15,9 +18,14 @@ type Plugin struct {
 	Distributions []string
 }
 
-func (p Plugin) createConfig(w io.Writer) error {
-
-	_, err := io.WriteString(w, fmt.Sprintf(`[distutils]
+func (p Plugin) createConfig() error {
+	f, err := os.Create(path.Join("/", ".pypirc"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	buff := bufio.NewWriter(f)
+	_, err = io.WriteString(buff, fmt.Sprintf(`[distutils]
 		index-servers =
 			pypi
 		[pypi]
@@ -25,11 +33,19 @@ func (p Plugin) createConfig(w io.Writer) error {
 		username: %s
 		password: %s
 		`, p.Repository, p.Username, p.Password))
-	return err
+	if err != nil {
+		return err
+	}
+	buff.Flush()
+	return nil
 }
 
 // Exec runs the plugin - doing the necessary setup.py modifications
 func (p Plugin) Exec() error {
+	err := p.createConfig()
+	if err != nil {
+		log.Fatalf("Unable to write .pypirc file due to: %s", err)
+	}
 	distributions := []string{"sdist"}
 	if len(p.Distributions) > 0 {
 		distributions = p.Distributions
