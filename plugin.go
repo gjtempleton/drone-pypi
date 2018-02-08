@@ -48,7 +48,7 @@ func (p Plugin) Exec() error {
 	if err != nil {
 		log.Fatalf("Unable to write .pypirc file due to: %s", err)
 	}
-	file, err := os.Open(".pyirc")
+	file, err := os.Open("/.pyirc")
 	if err != nil {
 		log.Fatal(err)
 	}
