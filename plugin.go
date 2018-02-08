@@ -19,7 +19,7 @@ type Plugin struct {
 }
 
 func (p Plugin) createConfig() error {
-	f, err := os.Create(path.Join("/", ".pypirc"))
+	f, err := os.Create(path.Join(os.Getenv("HOME"), ".pypirc"))
 	if err != nil {
 		return err
 	}
@@ -43,8 +43,14 @@ password: %s
 
 // Exec runs the plugin - doing the necessary setup.py modifications
 func (p Plugin) Exec() error {
-
 	err := p.createConfig()
+
+	file, err := os.Open(path.Join(os.Getenv("HOME"), ".pypirc"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Print(file)
 	if err != nil {
 		log.Fatalf("Unable to write .pypirc file due to: %s", err)
 	}
