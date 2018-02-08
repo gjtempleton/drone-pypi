@@ -50,7 +50,7 @@ func (p Plugin) Exec() error {
 		log.Fatal(err)
 	}
 
-	fmt.Print(file)
+	log.Print(file)
 	if err != nil {
 		log.Fatalf("Unable to write .pypirc file due to: %s", err)
 	}
