@@ -26,13 +26,14 @@ func (p Plugin) createConfig() error {
 	defer f.Close()
 	buff := bufio.NewWriter(f)
 	_, err = io.WriteString(buff, fmt.Sprintf(`[distutils]
-		index-servers =
-			pypi
-		[pypi]
-		repository: %s
-		username: %s
-		password: %s
-		`, p.Repository, p.Username, p.Password))
+index-servers =
+    pypi
+
+[pypi]
+repository: %s
+username: %s
+password: %s
+`, p.Repository, p.Username, p.Password))
 	if err != nil {
 		return err
 	}
@@ -42,10 +43,17 @@ func (p Plugin) createConfig() error {
 
 // Exec runs the plugin - doing the necessary setup.py modifications
 func (p Plugin) Exec() error {
+
 	err := p.createConfig()
 	if err != nil {
 		log.Fatalf("Unable to write .pypirc file due to: %s", err)
 	}
+	file, err := os.Open(".pyirc")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Print(file)
 	distributions := []string{"sdist"}
 	if len(p.Distributions) > 0 {
 		distributions = p.Distributions
