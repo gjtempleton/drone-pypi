@@ -27,9 +27,9 @@ func (p Plugin) createConfig() error {
 	buff := bufio.NewWriter(f)
 	_, err = io.WriteString(buff, fmt.Sprintf(`[distutils]
 index-servers =
-    pypi
+    repo
 
-[pypi]
+[repo]
 repository: %s
 username: %s
 password: %s
@@ -58,7 +58,7 @@ func (p Plugin) Exec() error {
 	}
 	args = append(args, "upload")
 	args = append(args, "-r")
-	args = append(args, "pypi")
+	args = append(args, "repo")
 	out, err := exec.Command("python3", args...).CombinedOutput()
 
 	if err != nil {
