@@ -28,13 +28,13 @@ func main() {
 			Name:   "username",
 			Usage:  "pypi username",
 			Value:  "guido",
-			EnvVar: "PLUGIN_USERNAME",
+			EnvVar: "PLUGIN_USERNAME,USERNAME",
 		},
 		cli.StringFlag{
 			Name:   "password",
 			Usage:  "pypi password",
 			Value:  "secret",
-			EnvVar: "PLUGIN_PASSWORD",
+			EnvVar: "PLUGIN_PASSWORD,PASSWORD",
 		},
 		cli.StringSliceFlag{
 			Name:   "distributions",
