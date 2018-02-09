@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 )
 
 // Plugin defines the PyPi plugin parameters
@@ -18,7 +19,7 @@ type Plugin struct {
 }
 
 func (p Plugin) createConfig() error {
-	f, err := os.Create(".pypirc")
+	f, err := os.Create(path.Join(os.Getenv("HOME"), ".pypirc"))
 	if err != nil {
 		return err
 	}
