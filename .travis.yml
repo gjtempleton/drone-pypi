@@ -4,6 +4,8 @@ services:
 language: go
 go:
 - 1.9
+install:
+- pip install setuptools
 script:
 - go vet
 - go test -cover -coverprofile=coverage.out
