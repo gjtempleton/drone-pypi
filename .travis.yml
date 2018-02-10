@@ -5,7 +5,7 @@ language: go
 go:
 - 1.9
 install:
-- pip install setuptools
+- pip3 install setuptools wheel
 script:
 - go vet
 - go test -cover -coverprofile=coverage.out
