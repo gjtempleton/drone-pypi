@@ -8,6 +8,7 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y python3-setuptools
 script:
+- sed -i s/0.1.0/0.1.${TRAVIS_BUILD_NUMBER}/g testdata/setup.py
 - go vet
 - go test -cover -coverprofile=coverage.out
 - go build -ldflags "-X main.build=${TRAVIS_BUILD_NUMBER}" -a -tags netgo
