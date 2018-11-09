@@ -28,18 +28,18 @@ script:
 
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker build -t $DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
+  - docker build -t $DOCKER_USER/$DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
   - |
     if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker tag $DOCKER_REPO:build $DOCKER_REPO:latest
+      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:latest
     else
-      docker tag $DOCKER_REPO:build $DOCKER_REPO:$TRAVIS_BRANCH;
+      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:$TRAVIS_BRANCH;
     fi
-  - docker push $DOCKER_REPO
+  - docker push $DOCKER_USER/$DOCKER_REPO
 
 env:
   global:
   - PLUGIN_REPOSITORY=https://test.pypi.org/legacy/
   - PLUGIN_DISTRIBUTIONS=sdist
-  - DOCKER_REPO=xoxys/drone-pypi
+  - DOCKER_REPO=drone-pypi
   - RANDOM=$(date | md5sum | head -c 6)
