@@ -7,12 +7,14 @@ language: go
 go:
   - 1.9
 
-before_install:
+install:
   - sudo apt-get -qq update
   - sudo apt-get install -y python3-setuptools
 
-script:
+before_script:
   - sed -i s/0.1.0/0.1.${TRAVIS_BUILD_NUMBER}/g testdata/setup.py
+
+script:
   - go vet
   - go test -cover -coverprofile=coverage.out
   - rm -rf dist
@@ -24,15 +26,18 @@ script:
       go build -v -ldflags "-X main.version=${TRAVIS_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}" -a -o release/linux/amd64/drone-pypi
     fi
 
-# after_success:
-#   - test $TRAVIS_PULL_REQUEST = false && docker login -u $DOCKER_USER -p $DOCKER_PASS
-#     && export REPO=gjtempleton/drone-pypi && docker build -t $REPO:build --build-arg
-#     GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" . && docker tag $REPO:build
-#     $REPO:travis-$TRAVIS_BUILD_NUMBER && if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-#     docker tag $REPO:build $REPO:latest; else docker tag $REPO:build $REPO:$TRAVIS_BRANCH;
-#     fi && docker push $REPO
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker build -t $DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .  - |
+    if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      docker tag $DOCKER_REPO:build $DOCKER_REPO:latest
+    else
+      docker tag $DOCKER_REPO:build $DOCKER_REPO:$TRAVIS_BRANCH;
+    fi
+  - docker push $DOCKER_REPO
 
 env:
   global:
   - PLUGIN_REPOSITORY=https://test.pypi.org/legacy/
   - PLUGIN_DISTRIBUTIONS=sdist
+  - DOCKER_REPO=xoxys/drone-pypi
