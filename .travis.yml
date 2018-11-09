@@ -36,6 +36,7 @@ after_success:
     else
       docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:$TRAVIS_BRANCH;
     fi
+  - docker rmi $DOCKER_USER/$DOCKER_REPO:build
   - docker push $DOCKER_USER/$DOCKER_REPO
 
 env:
