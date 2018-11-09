@@ -13,6 +13,7 @@ install:
 
 before_script:
   - sed -i s/0.1.0/0.1.${RANDOM}/g testdata/setup.py
+  - export RANDOM=$(date | md5sum | head -c 6)
 
 script:
   - go vet
@@ -42,4 +43,3 @@ env:
   - PLUGIN_REPOSITORY=https://test.pypi.org/legacy/
   - PLUGIN_DISTRIBUTIONS=sdist
   - DOCKER_REPO=drone-pypi
-  - RANDOM=$(date | md5sum | head -c 6)
