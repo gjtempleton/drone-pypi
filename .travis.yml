@@ -28,7 +28,8 @@ script:
 
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker build -t $DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .  - |
+  - docker build -t $DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
+  - |
     if [[ "$TRAVIS_BRANCH" == "master" ]]; then
       docker tag $DOCKER_REPO:build $DOCKER_REPO:latest
     else
