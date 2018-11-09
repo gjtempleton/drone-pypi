@@ -28,7 +28,7 @@ script:
     fi
 
 after_success:
-  - echo '$DOCKER_PASS' | docker login --username $DOCKER_USER --password-stdin
+  - docker login --username $DOCKER_USER --password-stdin <<< '$DOCKER_PASS'
   - docker build -t $DOCKER_USER/$DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
   - |
     if [[ "$TRAVIS_BRANCH" == "master" ]]; then
