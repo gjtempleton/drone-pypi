@@ -15,9 +15,14 @@ script:
   - sed -i s/0.1.0/0.1.${TRAVIS_BUILD_NUMBER}/g testdata/setup.py
   - go vet
   - go test -cover -coverprofile=coverage.out
-  - go build -ldflags "-X main.build=${TRAVIS_BUILD_NUMBER}" -a -tags netgo
   - rm -rf dist
   - rm -rf drone_pypi_test.egg-info
+  - |
+    if test "${TRAVIS_TAG}" = ""; then
+      go build -ldflags "-X main.build=${TRAVIS_BUILD_NUMBER}" -a -o release/linux/amd64/drone-pypi
+    else
+      go build -v -ldflags "-X main.version=${TRAVIS_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}" -a -o release/linux/amd64/drone-pypi
+    fi
 
 # after_success:
 #   - test $TRAVIS_PULL_REQUEST = false && docker login -u $DOCKER_USER -p $DOCKER_PASS

@@ -20,5 +20,5 @@ RUN apk add -U \
 	setuptools \
 	wheel
 
-ADD drone-pypi /bin/
+ADD release/linux/amd64/drone-pypi /bin/
 ENTRYPOINT ["/bin/drone-pypi"]
