@@ -12,8 +12,8 @@ install:
   - sudo apt-get install -y python3-setuptools twine
 
 before_script:
-  - export RANDOM=$(date | md5sum | head -c 6)
-  - sed -i s/0.1.0/0.1.${TRAVIS_BUILD_NUMBER}${RANDOM}/g testdata/setup.py
+  - export RANDOM=$(date | md5sum | head -c 4)
+  - sed -i s/0.1.0/0.2.9${RANDOM}/g testdata/setup.py
 
 script:
   - go vet

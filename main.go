@@ -21,7 +21,7 @@ func main() {
 		cli.StringFlag{
 			Name:   "repository",
 			Usage:  "pypi repository URL",
-			Value:  "https://pypi.python.org/pypi",
+			Value:  "https://test.pypi.org/legacy/",
 			EnvVar: "PLUGIN_REPOSITORY",
 		},
 		cli.StringFlag{
