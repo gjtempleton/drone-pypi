@@ -11,15 +11,10 @@ LABEL org.label-schema.url="https://github.com/gjtempleton/drone-pypi" \
       org.label-schema.vcs-ref=$GITSHA \
       org.label-schema.build-date=$BUILDDATE
 
-RUN apk add -U \
-	ca-certificates \
-	python3 \
+RUN apk add -U ca-certificates python3 \
  && rm -rf /var/cache/apk/* \
- && pip3 install --no-cache-dir --upgrade \
-    twine \
-	pip \
-	setuptools \
-	wheel
+ && pip3 install --no-cache-dir --upgrade pip \
+ && pip3 install --no-cache-dir --upgrade twine pip setuptools wheel six
 
 ADD release/linux/amd64/drone-pypi /bin/
 ENTRYPOINT ["/bin/drone-pypi"]
