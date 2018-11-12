@@ -16,6 +16,7 @@ func TestPublish(t *testing.T) {
 		Password:      password,
 		SetupFile:     "testdata/setup.py",
 		Distributions: strings.Split(os.Getenv("PLUGIN_DISTRIBUTIONS"), " "),
+		SkipBuild:     false,
 	}
 	err := plugin.Exec()
 	if err != nil {
@@ -32,11 +33,11 @@ func TestUpload(t *testing.T) {
 	}{
 		{
 			[]string{},
-			[]string{"python3", "testdata/setup.py", "sdist", "upload", "-r", "repo"},
+			[]string{"python3", "testdata/setup.py", "sdist"},
 		},
 		{
 			[]string{"sdist", "bdist_wheel"},
-			[]string{"python3", "testdata/setup.py", "sdist", "bdist_wheel", "upload", "-r", "repo"},
+			[]string{"python3", "testdata/setup.py", "sdist", "bdist_wheel"},
 		},
 	}
 	for i, data := range testdata {

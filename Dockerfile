@@ -16,6 +16,7 @@ RUN apk add -U \
 	python3 \
  && rm -rf /var/cache/apk/* \
  && pip3 install --no-cache-dir --upgrade \
+    twine \
 	pip \
 	setuptools \
 	wheel

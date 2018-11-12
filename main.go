@@ -47,6 +47,11 @@ func main() {
 			Usage:  "distribution types to deploy",
 			EnvVar: "PLUGIN_DISTRIBUTIONS",
 		},
+		cli.BoolTFlag{
+			Name:   "skip_build",
+			Usage:  "skip build and only upload pre-build packages",
+			EnvVar: "PLUGIN_SKIP_BUILD",
+		},
 	}
 
 	app.Run(os.Args)
@@ -59,6 +64,7 @@ func run(c *cli.Context) {
 		Password:      c.String("password"),
 		SetupFile:     c.String("setupfile"),
 		Distributions: c.StringSlice("distributions"),
+		SkipBuild:     c.Bool("skip_build"),
 	}
 
 	if err := plugin.Exec(); err != nil {
