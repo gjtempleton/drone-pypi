@@ -50,14 +50,14 @@ func (p Plugin) Exec() error {
 	if !p.SkipBuild {
 		out, err := p.buildCommand().CombinedOutput()
 		if err != nil {
-			return errors.Wrap(err, "Build failed")
+			return errors.Wrap(err, string(out))
 		}
 		log.Printf("Output: %s", out)
 	}
 
 	out, err := p.uploadCommand().CombinedOutput()
 	if err != nil {
-		return errors.Wrap(err, "Upload failed")
+		return errors.Wrap(err, string(out))
 	}
 	log.Printf("Output: %s", out)
 
