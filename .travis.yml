@@ -9,12 +9,11 @@ go:
 
 install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y python3-setuptools
-  - sudo pip install twine
+  - sudo apt-get install -y python3-setuptools twine
 
 before_script:
-  - sed -i s/0.1.0/0.1.${RANDOM}/g testdata/setup.py
   - export RANDOM=$(date | md5sum | head -c 6)
+  - sed -i s/0.1.0/0.1.${TRAVIS_BUILD_NUMBER}${RANDOM}/g testdata/setup.py
 
 script:
   - go vet
@@ -35,7 +34,7 @@ after_success:
     if [[ "$TRAVIS_BRANCH" == "master" ]]; then
       docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:latest
     else
-      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:$TRAVIS_BRANCH;
+      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:${TRAVIS_BRANCH##v};
     fi
   - docker rmi $DOCKER_USER/$DOCKER_REPO:build
   - docker push $DOCKER_USER/$DOCKER_REPO
