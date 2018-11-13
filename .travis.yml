@@ -14,8 +14,8 @@ install:
   - python3 -m pip install --upgrade --user setuptools wheel twine six
 
 before_script:
-  - export RANDOM=$(date | md5sum | head -c 4)
-  - sed -i s/0.1.0/0.2.9${RANDOM}/g testdata/setup.py
+  - export RANDOM=$(date +%s | sha256sum | base64 | head -c 5)
+  - sed -i s/0.1.0/0.${TRAVIS_BUILD_NUMBER}.${RANDOM}/g testdata/setup.py
 
 script:
   - go vet
