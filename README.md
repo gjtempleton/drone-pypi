@@ -1,6 +1,6 @@
 # drone-pypi
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/xoxys/drone-pypi)](https://goreportcard.com/report/github.com/xoxys/drone-pypi) [![](https://goreportcard.com/report/github.com/xoxys/drone-pypi)](https://microbadger.com/images/xoxys/drone-pypi "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/xoxys/drone-pypi.svg?branch=master)](https://travis-ci.org/xoxys/drone-pypi)
+[![Go Report Card](https://goreportcard.com/badge/github.com/xoxys/drone-pypi)](https://goreportcard.com/report/github.com/xoxys/drone-pypi) [![](https://images.microbadger.com/badges/image/xoxys/drone-pypi.svg)](https://microbadger.com/images/xoxys/drone-pypi "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/xoxys/drone-pypi.svg?branch=master)](https://travis-ci.org/xoxys/drone-pypi)
 
 Basic Drone Plugin for PyPi publishes - Based upon the starter project for creating Drone plugins.
 
