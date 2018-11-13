@@ -1,86 +1,26 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/gjtempleton/drone-pypi)](https://goreportcard.com/report/github.com/gjtempleton/drone-pypi) [![](https://images.microbadger.com/badges/image/gjtempleton/drone-pypi.svg)](https://microbadger.com/images/gjtempleton/drone-pypi "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/gjtempleton/drone-pypi.svg?branch=master)](https://travis-ci.org/gjtempleton/drone-pypi)
-
 # drone-pypi
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/xoxys/drone-pypi)](https://goreportcard.com/report/github.com/xoxys/drone-pypi) [![](https://goreportcard.com/report/github.com/xoxys/drone-pypi)](https://microbadger.com/images/xoxys/drone-pypi "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/xoxys/drone-pypi.svg?branch=master)](https://travis-ci.org/xoxys/drone-pypi)
 
 Basic Drone Plugin for PyPi publishes - Based upon the starter project for creating Drone plugins.
 
-### Metadata
+## Build
 
-Build and Repository metadata are prefixed with `DRONE_` and sent to the plugin at runtime. The full list of available parameters are already included in the `main.go` file as command line flags. You should remove un-used parameters from the list so that one can easily see which parameters are used by which plugins.
+Build the binary with the following commands:
 
-Example parameters:
-
-```
-cli.IntFlag{
-    Name:   "build.number",
-    Usage:  "build number",
-    EnvVar: "DRONE_BUILD_NUMBER",
-},
-cli.StringFlag{
-    Name:   "build.status",
-    Usage:  "build status",
-    Value:  "success",
-    EnvVar: "DRONE_BUILD_STATUS",
-},
+```shell
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -tags netgo -o release/linux/amd64/drone-pypi
+docker build --rm -t plugins/drone-pypi .
 ```
 
-### Parameters
+## Usage
 
-Plugin parameters are defined in the yaml file:
-
+```shell
+docker run --rm \
+  -e PLUGIN_USERNAME=jdoe \
+  -e PLUGIN_PASSWORD=my_secret \
+  -e PLUGIN_SKIP_BUILD=false \
+  -v $(pwd):$(pwd) \
+  -w $(pwd) \
+  plugins/drone-pypi
 ```
-slack:
-  channel: dev
-  username: drone
-```
-
-They are prefixed with `PLUGIN_` and sent to the plugin at runtime:
-
-```
-PLUGIN_CHANNEL=dev
-PLUGIN_USERNAME=drone
-```
-
-These parameters can be retrieved using `cli.Flag` as seen below:
-
-```
-cli.StringFlag{
-    Usage:  "slack channel",
-    EnvVar: "PLUGIN_CHANNEL",
-},
-cli.StringFlag{
-    Usage:  "slack username",
-    EnvVar: "PLUGIN_USERNAME",
-},
-```
-
-### Secrets
-
-Sensitive fields should not be specified in the yaml file. Instead they are passed to your plugin as environment variable. Secrets should use a prefix that corresponds to the plugin name. For example, the Slack plugin prefixes secrets with `SLACK_`:
-
-```
-cli.StringFlag{
-    Usage:  "slack api token",
-    EnvVar: "SLACK_TOKEN",
-},
-```
-
-### Logos
-
-Please replace the logo.svg file with a meaningful svg logo for your plugin. If you are you building a Slack plugin, for example, please provide the Slack logo. This icon is displayed when your plugin is listed in the official plugin index.
-
-### Docs
-
-Please provide a DOCS.md file in the root of your repository that documents plugin usage. This documentation is displayed when your plugin is listed in the official plugin index. Use the README.md file to describe building and testing the plugin locally.
-
-### Images
-
-Images are distributed as Docker images in the public Docker registry. Please use a minimalist alpine image when possible to limit the image download size. We are also working on supporting multiple plugin architectures, with compatibility guidelines coming soon
-
-### Testing
-
-Please create plugins that are easily runnable from the command line. This makes it much easier to debug and test plugins locally without having to launch actual builds.
-
-### Vendoring
-
-Please vendor dependencies in a manner compatible with `GOVENDOREXPERIMENT`. All official drone plugins should use [govend](https://github.com/govend/govend) with the `--prune` flag.
