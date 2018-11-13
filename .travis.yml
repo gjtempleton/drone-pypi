@@ -32,10 +32,9 @@ script:
 after_success:
   - docker login --username $DOCKER_USER --password-stdin <<< $DOCKER_PASS
   - export BRANCH=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - export TAG=`if [ "$TRAVIS_TAG" == "" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
   - docker build -t $DOCKER_REPO:$COMMIT --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
   - docker tag $DOCKER_REPO:$ $DOCKER_REPO:$BRANCH
-  - docker tag $DOCKER_REPO:$ $DOCKER_REPO:$TAG
+  - if [[ "$TRAVIS_TAG" ]] ; then docker tag $DOCKER_REPO:$ $DOCKER_REPO:$TRAVIS_TAG ; fi
   - docker rmi $DOCKER_REPO:$COMMIT
   - docker push $DOCKER_REPO
 
