@@ -31,18 +31,17 @@ script:
 
 after_success:
   - docker login --username $DOCKER_USER --password-stdin <<< $DOCKER_PASS
-  - docker build -t $DOCKER_USER/$DOCKER_REPO:build --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
-  - |
-    if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:latest
-    else
-      docker tag $DOCKER_USER/$DOCKER_REPO:build $DOCKER_USER/$DOCKER_REPO:${TRAVIS_BRANCH##v};
-    fi
-  - docker rmi $DOCKER_USER/$DOCKER_REPO:build
-  - docker push $DOCKER_USER/$DOCKER_REPO
+  - export BRANCH=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=`if [ "$TRAVIS_TAG" == "" ]; then echo "latest"; else echo $TRAVIS_TAG ; fi`
+  - docker build -t $DOCKER_REPO:$COMMIT --build-arg GITSHA=$TRAVIS_COMMIT --build-arg BUILDDATE="`date`" .
+  - docker tag $DOCKER_REPO:$ $DOCKER_REPO:$BRANCH
+  - docker tag $DOCKER_REPO:$ $DOCKER_REPO:$TAG
+  - docker rmi $DOCKER_REPO:$COMMIT
+  - docker push $DOCKER_REPO
 
 env:
   global:
   - PLUGIN_REPOSITORY=https://test.pypi.org/legacy/
   - PLUGIN_DISTRIBUTIONS=sdist
-  - DOCKER_REPO=drone-pypi
+  - DOCKER_REPO=xoxys/drone-pypi
+  - COMMIT=${TRAVIS_COMMIT::8}
