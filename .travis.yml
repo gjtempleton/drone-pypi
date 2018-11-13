@@ -36,7 +36,7 @@ after_success:
   - docker tag $DOCKER_REPO:$COMMIT $DOCKER_REPO:$BRANCH
   - if [[ "$TRAVIS_TAG" ]] ; then docker tag $DOCKER_REPO:$COMMIT $DOCKER_REPO:$TRAVIS_TAG ; fi
   - docker rmi $DOCKER_REPO:$COMMIT
-  - docker push $DOCKER_REPO#
+  - docker push $DOCKER_REPO
 
 env:
   global:
